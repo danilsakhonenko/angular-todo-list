@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { TaskComponent } from "./task/task.component";
-import { DUMMY_TASKS } from '../dummy-tasks';
 import { NewTaskComponent } from './new-task/new-task.component';
+import { NewTaskData } from './task/task.model';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -13,20 +14,21 @@ import { NewTaskComponent } from './new-task/new-task.component';
 export class TasksComponent {
   @Input({required:true}) currentUserId!:string;
   @Input() name?:string
+  private tasksService = inject(TasksService)
   isAddingTask=false;
-  tasks=DUMMY_TASKS
+
   get selectedUserTasks(){
-    return this.tasks.filter((task)=>task.userId===this.currentUserId)
+    return this.tasksService.getUserTasks(this.currentUserId)
   }
   
   onCompleteTask(id:string){
-    this.tasks = this.tasks.filter((task)=> task.id !== id)
+    this.tasksService.removeTask(id)
   }
 
-  onCancelTask(){
+  onDialogClose(){
     this.isAddingTask=false;
   }
-  onAddTask(){
+  onStartAddingTask(){
     this.isAddingTask=true;
   }
 }

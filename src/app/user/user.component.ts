@@ -1,10 +1,11 @@
 import { Component, computed, EventEmitter, Input, input, output, Output} from '@angular/core';
 import { User } from './user.model';
+import { CardComponent } from "../ui/card/card.component";
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [],
+  imports: [CardComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
